@@ -1,20 +1,23 @@
 package com.devthalys.organize.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(value = "user")
+@Document(collection = "user")
 public class UserModel {
 
     @Id
+    @JsonIgnore
     private String id;
 
     private String name;
@@ -25,7 +28,8 @@ public class UserModel {
 
     private String address;
 
-    private LocalDateTime date;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date date;
 
     private String login;
 
