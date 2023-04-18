@@ -1,5 +1,6 @@
 package com.devthalys.organize.rest.controllers.exceptionHandler;
 
+import com.devthalys.organize.exception.TaskNotFoundException;
 import com.devthalys.organize.exception.UserAlreadyExistsException;
 import com.devthalys.organize.exception.UserNotFoundException;
 import com.devthalys.organize.rest.ApiErrors;
@@ -40,9 +41,9 @@ public class ApplicationControllerAdvice {
         return new ApiErrors(e.getMessage());
     }
 
-    @ExceptionHandler(FieldNullException.class)
+    @ExceptionHandler(TaskNotFoundException.class)
     @ResponseStatus(BAD_REQUEST)
-    public ApiErrors handleFieldNullException(FieldNullException e){
+    public ApiErrors handleFieldNullException(TaskNotFoundException e){
         return new ApiErrors(e.getMessage());
     }
 }
