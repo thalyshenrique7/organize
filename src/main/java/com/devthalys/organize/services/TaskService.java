@@ -1,5 +1,6 @@
 package com.devthalys.organize.services;
 
+import com.devthalys.organize.dtos.TaskDto;
 import com.devthalys.organize.models.TaskModel;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,9 @@ public interface TaskService {
 
     Optional<TaskModel> findById(String id);
 
-    TaskModel save(TaskModel task);
+    TaskModel saveTaskAndUser(TaskDto task);
+
+    TaskModel saveTask(TaskModel task);
 
     void deleteById(String id);
 }

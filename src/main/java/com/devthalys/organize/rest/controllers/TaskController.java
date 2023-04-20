@@ -1,5 +1,6 @@
 package com.devthalys.organize.rest.controllers;
 
+import com.devthalys.organize.dtos.TaskDto;
 import com.devthalys.organize.exception.TaskNotFoundException;
 import com.devthalys.organize.models.TaskModel;
 import com.devthalys.organize.services.impl.TaskServiceImpl;
@@ -23,7 +24,7 @@ public class TaskController {
         return service.findAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping(value = "/{id}")
     public TaskModel findById(@PathVariable String id){
         return service.findById(id)
                 .map( task -> {
@@ -32,13 +33,18 @@ public class TaskController {
         }).orElseThrow(() -> new TaskNotFoundException("Task not found"));
     }
 
-    @PostMapping
+    @PostMapping(value = "/users")
     @ResponseStatus(CREATED)
-    public TaskModel save(@RequestBody TaskModel task){
-        return service.save(task);
+    public TaskModel save(@RequestBody TaskDto task){
+        return service.saveTaskAndUser(task);
     }
 
-    @DeleteMapping("{id}")
+    @PostMapping(value = "/")
+    public TaskModel saveTask(@RequestBody TaskModel task){
+        return service.saveTask(task);
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
     @ResponseStatus(NO_CONTENT)
     public void delete(@PathVariable String id){
         service.deleteById(id);

@@ -8,11 +8,10 @@ import com.devthalys.organize.services.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -78,7 +77,7 @@ public class UserController {
         updateUser.setEmail(user.getEmail());
         updateUser.setCpf(user.getCpf());
         updateUser.setAddress(user.getAddress());
-        updateUser.setDate(user.getDate());
+        updateUser.setDate(LocalDateTime.now());
         updateUser.setLogin(user.getLogin());
         updateUser.setPassword(user.getPassword());
 
