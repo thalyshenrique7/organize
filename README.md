@@ -29,3 +29,19 @@ Fields in TaskModel:
 + user
 
 Constraint: All fields is required
+
+> Technologies Used:
+
+<table>
+<tr align="center">
+<td>Java</td>
+<td>Spring Boot (Web, Validation, Security)</td>
+<td>MongoDB</td>
+</tr>
+
+<tr align="center">
+<td>11</td>
+<td>2.7.10</td>
+<td>6.0.5</td>
+</tr>
+</table>
