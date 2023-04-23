@@ -21,7 +21,9 @@ Fields in TaskModel:
 
 + id
 + nameTask
++ description
 + dateCreation
++ updateDate
 + taskStatus
 + user
 
