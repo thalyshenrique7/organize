@@ -43,3 +43,8 @@ Fields in TaskModel:
 <td>6.0.5</td>
 </tr>
 </table>
+
+### Author
+> Thalys Henrique
+
+https://www.linkedin.com/in/thalyshenrique7/
