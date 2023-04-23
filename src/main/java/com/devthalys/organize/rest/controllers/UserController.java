@@ -5,12 +5,13 @@ import com.devthalys.organize.exception.UserAlreadyExistsException;
 import com.devthalys.organize.exception.UserNotFoundException;
 import com.devthalys.organize.models.UserModel;
 import com.devthalys.organize.services.impl.UserServiceImpl;
-import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,6 +24,9 @@ public class UserController {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<UserModel> findAll(){
@@ -50,7 +54,10 @@ public class UserController {
         }
 
         var newUser = new UserModel();
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         BeanUtils.copyProperties(user, newUser);
+        newUser.setUserCreated(true);
         return userService.save(newUser);
     }
 

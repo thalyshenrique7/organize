@@ -4,15 +4,23 @@ import com.devthalys.organize.models.UserModel;
 import com.devthalys.organize.repositories.UserRepository;
 import com.devthalys.organize.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserModel> findAll() {
@@ -30,6 +38,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserModel findByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    @Override
     public UserModel save(UserModel user) {
         return userRepository.save(user);
     }
@@ -37,5 +50,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteByCpf(String cpf) {
         userRepository.deleteByCpf(cpf);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserModel user = userRepository.findByLogin(username);
+
+        if(user == null){
+            throw new UsernameNotFoundException("User not found.");
+        }
+
+        String[] role = user.isUserCreated() ?
+                new String[]{"USER"} : new String[]{" "};
+
+        return User
+                .builder()
+                .username(user.getLogin())
+                .password(user.getPassword())
+                .roles(role)
+                .build();
     }
 }

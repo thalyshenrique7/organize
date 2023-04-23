@@ -1,5 +1,6 @@
 package com.devthalys.organize.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,9 @@ import java.time.LocalDateTime;
 @Document(collection = "user")
 public class UserModel {
 
+
     @Id
+    @JsonIgnore
     private String id;
 
     private String name;
@@ -29,8 +32,13 @@ public class UserModel {
 
     private LocalDateTime date;
 
+    @JsonIgnore
     private String login;
 
+    @JsonIgnore
     private String password;
+
+    @JsonIgnore
+    private boolean userCreated;
 
 }

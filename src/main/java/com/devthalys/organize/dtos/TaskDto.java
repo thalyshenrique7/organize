@@ -1,8 +1,8 @@
 package com.devthalys.organize.dtos;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -15,6 +15,9 @@ public class TaskDto implements Serializable {
 
     @NotBlank(message = "{required.field.name-task}")
     private String nameTask;
+
+    @NotBlank(message = "{required.field.description-task}")
+    private String description;
 
     private LocalDateTime dateCreation;
 

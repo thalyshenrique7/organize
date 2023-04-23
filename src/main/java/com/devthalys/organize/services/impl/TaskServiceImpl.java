@@ -1,6 +1,7 @@
 package com.devthalys.organize.services.impl;
 
 import com.devthalys.organize.dtos.TaskDto;
+import com.devthalys.organize.exception.TaskNotFoundException;
 import com.devthalys.organize.exception.UserNotFoundException;
 import com.devthalys.organize.models.TaskModel;
 import com.devthalys.organize.models.UserModel;
@@ -34,17 +35,19 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskModel saveTaskAndUser(TaskDto taskDto) {
+    public TaskModel save(TaskDto taskDto) {
         UserModel user = userRepository.findByCpf(taskDto.getUser());
         if(userRepository.existsByCpf(taskDto.getUser())){
 
             TaskModel task = TaskModel.builder()
                     .nameTask(taskDto.getNameTask())
+                    .description(taskDto.getDescription())
                     .taskStatus(taskDto.getTaskStatus())
                     .dateCreation(LocalDateTime.now())
                     .user(user)
                     .build();
 
+            taskRepository.save(task); // -> Makes generate ID to task
             return task;
 
         }
@@ -53,12 +56,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskModel saveTask(TaskModel task) {
-        return taskRepository.save(task);
+    public void deleteById(String id) {
+        taskRepository.deleteById(id);
     }
 
     @Override
-    public void deleteById(String id) {
-        taskRepository.deleteById(id);
+    public void update(TaskModel task) {
+        taskRepository.save(task);
     }
 }

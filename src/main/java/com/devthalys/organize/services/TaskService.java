@@ -14,9 +14,9 @@ public interface TaskService {
 
     Optional<TaskModel> findById(String id);
 
-    TaskModel saveTaskAndUser(TaskDto task);
-
-    TaskModel saveTask(TaskModel task);
+    TaskModel save(TaskDto task);
 
     void deleteById(String id);
+
+    void update(TaskModel task);
 }
