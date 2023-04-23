@@ -14,6 +14,7 @@ Fields in UserModel:
 + date
 + login
 + password
++ userCreated
 
 Constraint: All fields is required
 
