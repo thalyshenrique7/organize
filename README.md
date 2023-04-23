@@ -28,8 +28,6 @@ Fields in TaskModel:
 + taskStatus
 + user
 
-Constraint: All fields is required
-
 > Technologies Used:
 
 <table>
