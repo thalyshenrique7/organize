@@ -35,12 +35,14 @@ Fields in TaskModel:
 <td>Java</td>
 <td>Spring Boot (Web, Validation, Security)</td>
 <td>MongoDB</td>
+<td>Swagger</td>
 </tr>
 
 <tr align="center">
 <td>11</td>
 <td>2.7.10</td>
 <td>6.0.5</td>
+<td>2.9.2</td>
 </tr>
 </table>
 
