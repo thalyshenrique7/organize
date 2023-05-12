@@ -45,7 +45,7 @@ public class UserController {
             @ApiResponse(code = 200, message = "User found"),
             @ApiResponse(code = 404, message = "User not found")
     })
-    public UserModel findByCpf(@PathVariable @ApiParam("User ID") String cpf){
+    public UserModel findByCpf(@PathVariable @ApiParam("User Cpf") String cpf){
         if(!userService.existsByCpf(cpf)){
             throw new UserNotFoundException("User not found.");
         }
