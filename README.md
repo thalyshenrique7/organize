@@ -36,6 +36,7 @@ Fields in TaskModel:
 <td>Spring Boot (Web, Validation, Security)</td>
 <td>MongoDB</td>
 <td>Swagger</td>
+<td>JUnit</td>
 </tr>
 
 <tr align="center">
@@ -43,6 +44,7 @@ Fields in TaskModel:
 <td>2.7.10</td>
 <td>6.0.5</td>
 <td>2.9.2</td>
+<td>5</td>
 </tr>
 </table>
 
