@@ -1,5 +1,6 @@
 package com.devthalys.organize.services.impl;
 
+import com.devthalys.organize.dtos.UserDto;
 import com.devthalys.organize.models.UserModel;
 import com.devthalys.organize.repositories.UserRepository;
 import com.devthalys.organize.services.UserService;
@@ -51,6 +52,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void deleteByCpf(String cpf) {
         userRepository.deleteByCpf(cpf);
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -4,6 +4,7 @@ import com.devthalys.organize.dtos.UserDto;
 import com.devthalys.organize.exception.UserAlreadyExistsException;
 import com.devthalys.organize.exception.UserNotFoundException;
 import com.devthalys.organize.models.UserModel;
+import com.devthalys.organize.services.impl.TaskServiceImpl;
 import com.devthalys.organize.services.impl.UserServiceImpl;
 import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +27,8 @@ public class UserController {
 
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private TaskServiceImpl taskService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -33,7 +36,8 @@ public class UserController {
     @GetMapping
     @ApiOperation(value = "Get details of users list")
     public List<UserModel> findAll(){
-        if(userService.findAll() == null){
+        List<UserModel> findAll = userService.findAll();
+        if(findAll == null){
             throw new UserNotFoundException("Users not found.");
         }
         return userService.findAll();
@@ -46,11 +50,10 @@ public class UserController {
             @ApiResponse(code = 404, message = "User not found")
     })
     public UserModel findByCpf(@PathVariable @ApiParam("User Cpf") String cpf){
-        if(!userService.existsByCpf(cpf)){
-            throw new UserNotFoundException("User not found.");
+        if(userService.existsByCpf(cpf)) {
+            return userService.findByCpf(cpf);
         }
-
-        return userService.findByCpf(cpf);
+            throw new UserNotFoundException("User not found.");
     }
 
     @Transactional
@@ -86,6 +89,7 @@ public class UserController {
         if(!userService.existsByCpf(cpf)){
             throw new UserNotFoundException("User not found.");
         }
+
         userService.deleteByCpf(cpf);
     }
 
@@ -111,6 +115,7 @@ public class UserController {
         updateUser.setLogin(user.getLogin());
         updateUser.setPassword(user.getPassword());
 
+        userService.deleteByCpf(user.getCpf());
         userService.save(updateUser);
     }
 }
