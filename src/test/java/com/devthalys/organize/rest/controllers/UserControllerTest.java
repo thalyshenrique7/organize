@@ -1,12 +1,18 @@
 package com.devthalys.organize.rest.controllers;
 
+import com.devthalys.organize.configs.SecurityConfig;
+import com.devthalys.organize.dtos.UserDto;
 import com.devthalys.organize.models.UserModel;
 import com.devthalys.organize.services.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -23,7 +29,9 @@ class UserControllerTest {
     private UserController controller;
     @Mock
     private UserServiceImpl service = new UserServiceImpl();
-    private UserModel user = new UserModel();
+    private final UserModel user = new UserModel();
+    private final UserDto userDto = new UserDto();
+    private final SecurityConfig securityConfig = new SecurityConfig();
 
     @BeforeEach
     void setUp() {
@@ -43,19 +51,21 @@ class UserControllerTest {
     void whenFindAllThenReturnSuccess() {
         when(service.findAll()).thenReturn(List.of(user));
 
-        List<UserModel> response = controller.findAll();
-        assertNotNull(response);
-        assertEquals(HttpStatus.NO_CONTENT, HttpStatus.resolve(204));
-        assertEquals(response.size(), 1);
-        assertEquals(UserModel.class, response.get(0).getClass());
+        ResponseEntity<List<UserModel>> response = controller.findAll();
 
-        assertEquals(user.getId(), response.get(0).getId());
-        assertEquals(user.getName(), response.get(0).getName());
-        assertEquals(user.getEmail(), response.get(0).getEmail());
-        assertEquals(user.getAddress(), response.get(0).getAddress());
-        assertEquals(user.getLogin(), response.get(0).getLogin());
-        assertEquals(user.getPassword(), response.get(0).getPassword());
-        assertEquals(user.isUserCreated(), response.get(0).isUserCreated());
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(UserModel.class, response.getBody().get(0).getClass());
+
+        assertEquals(user.getId(), response.getBody().get(0).getId());
+        assertEquals(user.getName(), response.getBody().get(0).getName());
+        assertEquals(user.getEmail(), response.getBody().get(0).getEmail());
+        assertEquals(user.getAddress(), response.getBody().get(0).getAddress());
+        assertEquals(user.getLogin(), response.getBody().get(0).getLogin());
+        assertEquals(user.getPassword(), response.getBody().get(0).getPassword());
+        assertEquals(user.isUserCreated(), response.getBody().get(0).isUserCreated());
     }
 
     @Test
@@ -63,32 +73,45 @@ class UserControllerTest {
         when(service.existsByCpf(anyString())).thenReturn(true);
         when(service.findByCpf(anyString())).thenReturn(user);
 
-        UserModel response = controller.findByCpf(user.getCpf());
+        ResponseEntity<UserModel> response = controller.findByCpf(user.getCpf());
         assertNotNull(response);
-        assertEquals(user, response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(UserModel.class, response.getBody().getClass());
+
+        assertEquals(user.getId(), response.getBody().getId());
+        assertEquals(user.getName(), response.getBody().getName());
+        assertEquals(user.getEmail(), response.getBody().getEmail());
+        assertEquals(user.getAddress(), response.getBody().getAddress());
+        assertEquals(user.getLogin(), response.getBody().getLogin());
+        assertEquals(user.getPassword(), response.getBody().getPassword());
+        assertEquals(user.isUserCreated(), response.getBody().isUserCreated());
     }
 
     @Test
     void whenSaveThenReturnSuccess() {
         when(service.save(any())).thenReturn(user);
+        when(securityConfig.passwordEncoder()).thenReturn(new BCryptPasswordEncoder());
 
-        UserModel response = service.save(user);
+        ResponseEntity<UserModel> response = controller.save(userDto);
 
         assertNotNull(response);
-        assertEquals(HttpStatus.CREATED, HttpStatus.resolve(201));
-        assertEquals(UserModel.class, response.getClass());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
     }
 
     @Test
     void whenDeleteThenReturnSuccess() {
         doNothing().when(service).deleteByCpf(anyString());
 
-        service.deleteByCpf(user.getCpf());
+        ResponseEntity<Object> response = controller.delete(user.getCpf());
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
         verify(service, times(1)).deleteByCpf(anyString());
-        assertEquals(HttpStatus.NO_CONTENT, HttpStatus.resolve(204));
     }
 
     @Test
-    void whenUpdateThenReturnSuccess() {
-    }
+    void whenUpdateThenReturnSuccess() {}
 }

@@ -4,11 +4,12 @@ import com.devthalys.organize.dtos.UserDto;
 import com.devthalys.organize.exception.UserAlreadyExistsException;
 import com.devthalys.organize.exception.UserNotFoundException;
 import com.devthalys.organize.models.UserModel;
-import com.devthalys.organize.services.impl.TaskServiceImpl;
 import com.devthalys.organize.services.impl.UserServiceImpl;
 import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
@@ -27,20 +28,18 @@ public class UserController {
 
     @Autowired
     private UserServiceImpl userService;
-    @Autowired
-    private TaskServiceImpl taskService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @GetMapping
     @ApiOperation(value = "Get details of users list")
-    public List<UserModel> findAll(){
+    public ResponseEntity<List<UserModel>> findAll(){
         List<UserModel> findAll = userService.findAll();
         if(findAll == null){
-            throw new UserNotFoundException("Users not found.");
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserNotFoundException("Users list not found."));
         }
-        return userService.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
     }
 
     @GetMapping("{cpf}")
@@ -49,11 +48,11 @@ public class UserController {
             @ApiResponse(code = 200, message = "User found"),
             @ApiResponse(code = 404, message = "User not found")
     })
-    public UserModel findByCpf(@PathVariable @ApiParam("User Cpf") String cpf){
-        if(userService.existsByCpf(cpf)) {
-            return userService.findByCpf(cpf);
+    public ResponseEntity<UserModel> findByCpf(@PathVariable @ApiParam("User Cpf") String cpf){
+        if(!userService.existsByCpf(cpf)) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserNotFoundException("User not found."));
         }
-            throw new UserNotFoundException("User not found.");
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findByCpf(cpf));
     }
 
     @Transactional
@@ -63,10 +62,9 @@ public class UserController {
             @ApiResponse(code = 200, message = "User saved successful"),
             @ApiResponse(code = 404, message = "Error tried user saving")
     })
-    @ResponseStatus(CREATED)
-    public UserModel save(@RequestBody @Valid UserDto user){
+    public ResponseEntity<UserModel> save(@RequestBody @Valid UserDto user){
         if(userService.existsByCpf(user.getCpf())){
-            throw new UserAlreadyExistsException("Conflict: User already exists.");
+            ResponseEntity.status(HttpStatus.CONFLICT).body(new UserAlreadyExistsException("Conflict: User already exists."));
         }
 
         var newUser = new UserModel();
@@ -74,23 +72,23 @@ public class UserController {
         user.setPassword(encryptedPassword);
         BeanUtils.copyProperties(user, newUser);
         newUser.setUserCreated(true);
-        return userService.save(newUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(newUser));
     }
 
     @Transactional
     @DeleteMapping("{cpf}")
-    @ResponseStatus(NO_CONTENT)
     @ApiOperation(value = "Delete user by cpf")
     @ApiResponses({
             @ApiResponse(code = 200, message = "User deleted successful"),
             @ApiResponse(code = 404, message = "Error tried user delete")
     })
-    public void delete(@PathVariable @ApiParam(value = "User Cpf") String cpf){
+    public ResponseEntity<Object> delete(@PathVariable @ApiParam(value = "User Cpf") String cpf){
         if(!userService.existsByCpf(cpf)){
-            throw new UserNotFoundException("User not found.");
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserNotFoundException("User not found."));
         }
 
         userService.deleteByCpf(cpf);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User deleted successful.");
     }
 
     @PutMapping("{cpf}")
