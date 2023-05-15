@@ -2,19 +2,18 @@ package com.devthalys.organize.rest.controllers;
 
 import com.devthalys.organize.dtos.TaskDto;
 import com.devthalys.organize.dtos.UpdateCredentialsDto;
-import com.devthalys.organize.exception.TaskNotFoundException;
 import com.devthalys.organize.models.TaskModel;
 import com.devthalys.organize.services.impl.TaskServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -24,36 +23,41 @@ public class TaskController {
     private TaskServiceImpl service;
 
     @GetMapping
-    public List<TaskModel> findAll(){
-        return service.findAll();
+    public ResponseEntity<List<TaskModel>> findAll(){
+        List<TaskModel> findAll = service.findAll();
+        if(findAll == null){
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task List not found");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
     }
 
     @GetMapping(value = "/{id}")
-    public TaskModel findById(@PathVariable String id){
-        return service.findById(id)
-                .map( task -> {
-                    task.getId();
-                         return task;
-        }).orElseThrow(() -> new TaskNotFoundException("Task not found"));
+    public ResponseEntity<TaskModel> findById(@PathVariable String id){
+        Optional<TaskModel> findById = service.findById(id);
+        if(findById.isEmpty()){
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
+        }
+        service.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(findById.get());
     }
 
     @PostMapping(value = "/save")
-    @ResponseStatus(CREATED)
-    public TaskModel save(@RequestBody @Valid TaskDto task){
-        return service.save(task);
+    public ResponseEntity<TaskModel> save(@RequestBody @Valid TaskDto task){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(task));
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    @ResponseStatus(NO_CONTENT)
-    public void delete(@PathVariable String id){
+    public ResponseEntity<Object> delete(@PathVariable String id){
         service.deleteById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Task deleted successful");
     }
 
     @PutMapping(value = "/update/{id}")
-    @ResponseStatus(NO_CONTENT)
-    public void update(@PathVariable String id, @RequestBody @Valid UpdateCredentialsDto updateCredentialsDto){
-        TaskModel task = service.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException("Task not found"));
+    public ResponseEntity<Object> update(@PathVariable String id, @RequestBody @Valid UpdateCredentialsDto updateCredentialsDto){
+        Optional<TaskModel> task = service.findById(id);
+            if (task.isEmpty()){
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
+            }
 
         var newTask = new TaskModel();
         BeanUtils.copyProperties(task, newTask);
@@ -64,6 +68,6 @@ public class TaskController {
         newTask.setTaskStatus(updateCredentialsDto.getTaskStatus());
 
         service.update(newTask);
-
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Task updated successful");
     }
 }

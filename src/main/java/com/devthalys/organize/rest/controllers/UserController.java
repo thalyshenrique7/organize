@@ -18,7 +18,6 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
@@ -92,15 +91,14 @@ public class UserController {
     }
 
     @PutMapping("{cpf}")
-    @ResponseStatus(NO_CONTENT)
     @ApiOperation(value = "Update user by cpf")
     @ApiResponses({
             @ApiResponse(code = 200, message = "User updated successful"),
             @ApiResponse(code = 404, message = "Error tried user updating")
     })
-    public void update(@PathVariable @ApiParam(value = "User Cpf") String cpf, @RequestBody @Valid UserDto user) {
+    public ResponseEntity<Object> update(@PathVariable @ApiParam(value = "User Cpf") String cpf, @RequestBody @Valid UserDto user) {
         if(!userService.existsByCpf(cpf)){
-            throw new UserNotFoundException("User not found.");
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(new UserNotFoundException("User not found."));
         }
 
         var updateUser = new UserModel();
@@ -115,5 +113,6 @@ public class UserController {
 
         userService.deleteByCpf(user.getCpf());
         userService.save(updateUser);
+        return ResponseEntity.status(NO_CONTENT).body("User updated successful");
     }
 }
