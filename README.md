@@ -1,4 +1,4 @@
-# Project: Organize
+# Project: Task List (Organize-App)
 
 ### It's a task list developed by me to save daily tasks.
 
@@ -6,27 +6,13 @@
 
 Fields in UserModel:
 
-+ id
-+ name
-+ email
-+ cpf
-+ address
-+ date
-+ login
-+ password
-+ userCreated
+![UserModel](https://github.com/thalyshenrique7/thalyshenrique7/assets/100730757/6310dadb-6801-4f53-a40f-f9abf7c2d6d8)
 
-Constraint: All fields is required
+#### Constraint: All fields is required
 
 Fields in TaskModel:
 
-+ id
-+ nameTask
-+ description
-+ dateCreation
-+ updateDate
-+ taskStatus
-+ user
+![TaskModel](https://github.com/thalyshenrique7/thalyshenrique7/assets/100730757/488779f1-4d34-4b04-b752-5e1aeb08b612)
 
 > Technologies Used:
 
