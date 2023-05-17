@@ -6,7 +6,7 @@
 
 Fields in UserModel:
 
-![UML UserModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/b1a4295a-6fb0-4625-9a9a-4c9750556d52)
+![UML UserModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/e07f7d07-7108-4402-8e65-dc424b5eb29c)
 
 #### Constraint: All fields is required
 
