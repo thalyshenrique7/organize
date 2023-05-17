@@ -8,11 +8,14 @@ Fields in UserModel:
 
 ![UML UserModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/e07f7d07-7108-4402-8e65-dc424b5eb29c)
 
-#### Constraint: All fields is required
+#### Constraint in UserModel: All fields is required
 
 Fields in TaskModel:
 
 ![UML TaskModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/ff5d7f2c-ebd5-4f2e-9257-6639e4f7b0c9)
+
++ I created the package "Impl" with <b>UserServiceImpl</b> and <b>TaskServiceImpl</b>, creating then 
+a dependency relationship with <b>UserService</b> and <b>TaskService</b> for create Mocks for tests
 
 > Technologies Used:
 
