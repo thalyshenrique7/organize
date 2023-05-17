@@ -12,7 +12,7 @@ Fields in UserModel:
 
 Fields in TaskModel:
 
-![TaskModel](https://github.com/thalyshenrique7/thalyshenrique7/assets/100730757/488779f1-4d34-4b04-b752-5e1aeb08b612)
+![UML TaskModel ](https://github.com/thalyshenrique7/organize-app/assets/100730757/9bdadbc5-d57b-4541-97e7-4d763db3da87)
 
 > Technologies Used:
 
