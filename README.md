@@ -1,6 +1,6 @@
 # Project: Task List (Organize-App)
 
-### It's a task list developed by me to save daily tasks.
+### I thought of creating a list to save the tasks performed by a user, thus organizing his routine.
 
 > Status: Developing ⚠️
 
