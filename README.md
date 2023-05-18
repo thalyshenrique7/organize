@@ -14,7 +14,7 @@ Entity UserModel:
 
 ![UML UserModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/78d83d71-b561-4af9-8c89-f70af67aec4d)
 
-#### Constraint in UserModel:
+#### Constraints in UserModel:
 + All fields is required
 + CPF valid is required
 + CPF is unique
