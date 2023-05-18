@@ -1,6 +1,12 @@
 # Project: Task List (Organize-App)
 
-### I thought of creating a list to save the tasks performed by a user, thus organizing his routine.
+#### The Organize App, developed by me, is a task management project aimed at helping users effectively organize their daily routines. Built using Java and Spring Boot, this application incorporates Spring Security to ensure the utmost security for user data. Following the Model-View-Controller (MVC) architecture, it leverages MongoDB as the database, hosted on an AWS server.
+
+#### To optimize task retrieval based on their status, I implemented the Chain of Responsibility design pattern. This allows for efficient searching and filtering of tasks. Additionally, I incorporated the Observer pattern to ensure real-time notifications whenever data is modified.
+
+#### To ensure code quality, I implemented comprehensive testing using JUnit and Mockitos frameworks. This guarantees the reliability and stability of the application. Furthermore, Swagger integration enhances the documentation of API endpoints, providing a clear and user-friendly interface for developers and users alike.
+
+#### The Organize App is a powerful tool that empowers users to streamline their tasks, manage their routines efficiently, and stay on top of their daily responsibilities. With its robust security measures, reliable functionality, and intuitive design, it offers a seamless user experience for optimizing productivity and organization.
 
 > Status: Developing ⚠️
 
