@@ -12,7 +12,7 @@ Entity UserModel:
 
 Entity TaskModel:
 
-![UML TaskModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/ff5d7f2c-ebd5-4f2e-9257-6639e4f7b0c9)
+![UML TaskModel ](https://github.com/thalyshenrique7/organize-app/assets/100730757/4175cf09-0045-4db1-8dee-59054b333ebc)
 
 + I created the package "Impl" with <b>UserServiceImpl</b> and <b>TaskServiceImpl</b> for separate the interface definition from the implementation logic for when create Mocks for test class.
 
