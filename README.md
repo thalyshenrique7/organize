@@ -14,8 +14,7 @@ Entity TaskModel:
 
 ![UML TaskModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/ff5d7f2c-ebd5-4f2e-9257-6639e4f7b0c9)
 
-+ I created the package "Impl" with <b>UserServiceImpl</b> and <b>TaskServiceImpl</b>, creating then 
-a dependency relationship with <b>UserService</b> and <b>TaskService</b> for create Mocks for tests
++ I created the package "Impl" with <b>UserServiceImpl</b> and <b>TaskServiceImpl</b> for separate the interface definition from the implementation logic for when create Mocks for test class.
 
 > Technologies Used:
 
