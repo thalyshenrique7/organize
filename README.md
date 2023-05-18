@@ -12,7 +12,7 @@
 
 Entity UserModel:
 
-![UML UserModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/e07f7d07-7108-4402-8e65-dc424b5eb29c)
+![UML UserModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/78d83d71-b561-4af9-8c89-f70af67aec4d)
 
 #### Constraint in UserModel: All fields is required
 
