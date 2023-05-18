@@ -41,6 +41,16 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(findById.get());
     }
 
+    @GetMapping(value = "/status-completed")
+    public List<TaskModel> findByStatusCompleted(){
+        return service.findByStatusCompleted();
+    }
+
+    @GetMapping(value = "/status-pending")
+    public List<TaskModel> findByStatusPending(){
+        return service.findByStatusPending();
+    }
+
     @PostMapping(value = "/save")
     public ResponseEntity<TaskModel> save(@RequestBody @Valid TaskDto task){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(task));
@@ -62,10 +72,10 @@ public class TaskController {
         var newTask = new TaskModel();
         BeanUtils.copyProperties(task, newTask);
 
-        newTask.setNameTask(updateCredentialsDto.getNameTask());
+        newTask.setTaskName(updateCredentialsDto.getTaskName());
         newTask.setDescription(updateCredentialsDto.getDescription());
-        newTask.setUpdateDate(LocalDateTime.now());
-        newTask.setTaskStatus(updateCredentialsDto.getTaskStatus());
+        newTask.setLastUpdateDate(LocalDateTime.now());
+        newTask.setStatus(updateCredentialsDto.getStatus());
 
         service.update(newTask);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Task updated successful");

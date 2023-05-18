@@ -1,6 +1,5 @@
 package com.devthalys.organize.services.impl;
 
-import com.devthalys.organize.dtos.UserDto;
 import com.devthalys.organize.models.UserModel;
 import com.devthalys.organize.repositories.UserRepository;
 import com.devthalys.organize.services.UserService;
@@ -9,7 +8,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +17,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserModel> findAll() {
@@ -45,6 +40,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserModel save(UserModel user) {
+        user.setUserCreated(true);
         return userRepository.save(user);
     }
 

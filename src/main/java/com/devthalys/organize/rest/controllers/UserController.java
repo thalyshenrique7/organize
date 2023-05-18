@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -63,14 +63,13 @@ public class UserController {
     })
     public ResponseEntity<UserModel> save(@RequestBody @Valid UserDto user){
         if(userService.existsByCpf(user.getCpf())){
-            ResponseEntity.status(HttpStatus.CONFLICT).body(new UserAlreadyExistsException("Conflict: User already exists."));
+             throw new UserAlreadyExistsException("Conflict: User already exists.");
         }
 
         var newUser = new UserModel();
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
         BeanUtils.copyProperties(user, newUser);
-        newUser.setUserCreated(true);
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(newUser));
     }
 

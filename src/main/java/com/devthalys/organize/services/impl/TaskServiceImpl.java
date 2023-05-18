@@ -1,7 +1,7 @@
 package com.devthalys.organize.services.impl;
 
 import com.devthalys.organize.dtos.TaskDto;
-import com.devthalys.organize.exception.TaskNotFoundException;
+import com.devthalys.organize.enums.TaskStatus;
 import com.devthalys.organize.exception.UserNotFoundException;
 import com.devthalys.organize.models.TaskModel;
 import com.devthalys.organize.models.UserModel;
@@ -35,15 +35,25 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskModel> findByStatusCompleted() {
+        return taskRepository.findByStatus(TaskStatus.COMPLETED);
+    }
+
+    @Override
+    public List<TaskModel> findByStatusPending() {
+        return taskRepository.findByStatus(TaskStatus.PENDING);
+    }
+
+    @Override
     public TaskModel save(TaskDto taskDto) {
         UserModel user = userRepository.findByCpf(taskDto.getUser());
         if(userRepository.existsByCpf(taskDto.getUser())){
 
             TaskModel task = TaskModel.builder()
-                    .nameTask(taskDto.getNameTask())
+                    .taskName(taskDto.getTaskName())
                     .description(taskDto.getDescription())
-                    .taskStatus(taskDto.getTaskStatus())
-                    .dateCreation(LocalDateTime.now())
+                    .status(taskDto.getStatus())
+                    .creationDate(LocalDateTime.now())
                     .user(user)
                     .build();
 

@@ -14,6 +14,10 @@ public interface TaskService {
 
     Optional<TaskModel> findById(String id);
 
+    List<TaskModel> findByStatusCompleted();
+
+    List<TaskModel> findByStatusPending();
+
     TaskModel save(TaskDto task);
 
     void deleteById(String id);

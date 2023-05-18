@@ -17,6 +17,7 @@ public interface UserService {
     UserModel findByLogin(String login);
 
     void deleteByCpf(String cpf);
+
     UserModel save(UserModel user);
 
 }

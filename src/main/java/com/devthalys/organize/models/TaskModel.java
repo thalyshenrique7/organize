@@ -1,6 +1,7 @@
 package com.devthalys.organize.models;
 
 
+import com.devthalys.organize.enums.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,16 +25,16 @@ public class TaskModel implements Serializable {
     @Id
     private String id;
 
-    private String nameTask;
+    private String taskName;
 
     private String description;
 
-    private LocalDateTime dateCreation;
+    private LocalDateTime creationDate;
 
     @JsonIgnore
-    private LocalDateTime updateDate;
+    private LocalDateTime lastUpdateDate;
 
-    private String taskStatus;
+    private TaskStatus status;
 
     @DBRef
     private UserModel user;
