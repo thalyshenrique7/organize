@@ -1,6 +1,7 @@
 package com.devthalys.organize.services;
 
 import com.devthalys.organize.dtos.TaskDto;
+import com.devthalys.organize.enums.TaskStatus;
 import com.devthalys.organize.models.TaskModel;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,7 @@ public interface TaskService {
 
     Optional<TaskModel> findById(String id);
 
-    List<TaskModel> findByStatusCompleted();
-
-    List<TaskModel> findByStatusPending();
+    List<TaskModel> findTasksOrderedByStatus(TaskStatus tasks);
 
     TaskModel save(TaskDto task);
 

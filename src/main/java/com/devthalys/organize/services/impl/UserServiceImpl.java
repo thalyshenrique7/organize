@@ -1,6 +1,7 @@
 package com.devthalys.organize.services.impl;
 
 import com.devthalys.organize.models.UserModel;
+import com.devthalys.organize.models.UserObservable;
 import com.devthalys.organize.repositories.UserRepository;
 import com.devthalys.organize.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserObservable userObservable;
 
     @Override
     public List<UserModel> findAll() {
@@ -41,7 +45,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserModel save(UserModel user) {
         user.setUserCreated(true);
-        return userRepository.save(user);
+        userRepository.save(user);
+        userObservable.notifyUserChange(user);
+
+        return user;
     }
 
     @Override

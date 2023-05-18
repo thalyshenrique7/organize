@@ -2,6 +2,7 @@ package com.devthalys.organize.rest.controllers;
 
 import com.devthalys.organize.dtos.TaskDto;
 import com.devthalys.organize.dtos.UpdateCredentialsDto;
+import com.devthalys.organize.enums.TaskStatus;
 import com.devthalys.organize.models.TaskModel;
 import com.devthalys.organize.services.impl.TaskServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -20,51 +21,58 @@ import java.util.Optional;
 public class TaskController {
 
     @Autowired
-    private TaskServiceImpl service;
+    private TaskServiceImpl taskService;
 
     @GetMapping
     public ResponseEntity<List<TaskModel>> findAll(){
-        List<TaskModel> findAll = service.findAll();
+        List<TaskModel> findAll = taskService.findAll();
         if(findAll == null){
             ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task List not found");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(taskService.findAll());
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<TaskModel> findById(@PathVariable String id){
-        Optional<TaskModel> findById = service.findById(id);
+        Optional<TaskModel> findById = taskService.findById(id);
         if(findById.isEmpty()){
             ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
         }
-        service.findById(id);
+        taskService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(findById.get());
     }
 
-    @GetMapping(value = "/status-completed")
-    public List<TaskModel> findByStatusCompleted(){
-        return service.findByStatusCompleted();
-    }
+    @GetMapping(value = "/ordered/{order}")
+    public ResponseEntity<List<TaskModel>> findTasksOrderedByStatus(@PathVariable String order){
+        List<TaskModel> orderedTasks;
 
-    @GetMapping(value = "/status-pending")
-    public List<TaskModel> findByStatusPending(){
-        return service.findByStatusPending();
+        if(order.equals("pending")){
+            orderedTasks = taskService.findTasksOrderedByStatus(TaskStatus.PENDING);
+        } else if (order.equals("in progress")){
+            orderedTasks = taskService.findTasksOrderedByStatus(TaskStatus.IN_PROGRESS);
+        } else if(order.equals("completed")){
+            orderedTasks = taskService.findTasksOrderedByStatus(TaskStatus.COMPLETED);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(orderedTasks);
     }
 
     @PostMapping(value = "/save")
     public ResponseEntity<TaskModel> save(@RequestBody @Valid TaskDto task){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(task));
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.save(task));
     }
 
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable String id){
-        service.deleteById(id);
+        taskService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Task deleted successful");
     }
 
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<Object> update(@PathVariable String id, @RequestBody @Valid UpdateCredentialsDto updateCredentialsDto){
-        Optional<TaskModel> task = service.findById(id);
+        Optional<TaskModel> task = taskService.findById(id);
             if (task.isEmpty()){
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
             }
@@ -77,7 +85,7 @@ public class TaskController {
         newTask.setLastUpdateDate(LocalDateTime.now());
         newTask.setStatus(updateCredentialsDto.getStatus());
 
-        service.update(newTask);
+        taskService.update(newTask);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Task updated successful");
     }
 }

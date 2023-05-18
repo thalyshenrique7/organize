@@ -35,13 +35,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskModel> findByStatusCompleted() {
-        return taskRepository.findByStatus(TaskStatus.COMPLETED);
-    }
-
-    @Override
-    public List<TaskModel> findByStatusPending() {
-        return taskRepository.findByStatus(TaskStatus.PENDING);
+    public List<TaskModel> findTasksOrderedByStatus(TaskStatus tasks) {
+        return taskRepository.findByStatus(tasks);
     }
 
     @Override
