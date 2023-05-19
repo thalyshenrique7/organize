@@ -12,7 +12,7 @@
 
 Entity UserModel:
 
-![UML UserModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/78d83d71-b561-4af9-8c89-f70af67aec4d)
+![UML UserModel](https://github.com/thalyshenrique7/organize-app/assets/100730757/12be772a-1c0f-40ad-b492-72ebc0a2aa39)
 
 #### Constraints in UserModel:
 + All fields is required
@@ -22,7 +22,7 @@ Entity UserModel:
 
 Entity TaskModel:
 
-![UML TaskModel ](https://github.com/thalyshenrique7/organize-app/assets/100730757/4175cf09-0045-4db1-8dee-59054b333ebc)
+![UML TaskModel ](https://github.com/thalyshenrique7/organize-app/assets/100730757/115b91fd-dbfa-4dfe-beb7-3ae615e6c2a3)
 
 + I created the package "Impl" with <b>UserServiceImpl</b> and <b>TaskServiceImpl</b> for separate the interface definition from the implementation logic for when create Mocks for test class.
 
