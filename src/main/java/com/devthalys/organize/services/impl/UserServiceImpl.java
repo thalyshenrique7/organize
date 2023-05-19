@@ -1,7 +1,9 @@
 package com.devthalys.organize.services.impl;
 
+import com.devthalys.organize.models.TaskModel;
 import com.devthalys.organize.models.UserModel;
 import com.devthalys.organize.models.UserObservable;
+import com.devthalys.organize.repositories.TaskRepository;
 import com.devthalys.organize.repositories.UserRepository;
 import com.devthalys.organize.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Autowired
     private UserObservable userObservable;
@@ -47,16 +52,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setUserCreated(true);
         userRepository.save(user);
         userObservable.notifyUserChange(user);
-
         return user;
     }
 
     @Override
     public void deleteByCpf(String cpf) {
+        UserModel findUser = userRepository.findByCpf(cpf);
+
+        if(findUser != null){
+            List<TaskModel> userTasks = taskRepository.findByUser(findUser);
+            for(TaskModel task : userTasks){
+                taskRepository.deleteById(task.getId());
+            }
+        }
+
         userRepository.deleteByCpf(cpf);
+        userObservable.notifyUserChange(findUser);
     }
-
-
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserModel user = userRepository.findByLogin(username);

@@ -4,6 +4,7 @@ import com.devthalys.organize.dtos.TaskDto;
 import com.devthalys.organize.enums.TaskStatus;
 import com.devthalys.organize.exception.UserNotFoundException;
 import com.devthalys.organize.models.TaskModel;
+import com.devthalys.organize.models.TaskObservable;
 import com.devthalys.organize.models.UserModel;
 import com.devthalys.organize.repositories.TaskRepository;
 import com.devthalys.organize.repositories.UserRepository;
@@ -24,6 +25,9 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TaskObservable taskObservable;
+
     @Override
     public List<TaskModel> findAll() {
         return taskRepository.findAll();
@@ -32,6 +36,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Optional<TaskModel> findById(String id) {
         return taskRepository.findById(id);
+    }
+
+    @Override
+    public List<TaskModel> findByUser(UserModel user) {
+        return taskRepository.findByUser(user);
     }
 
     @Override
@@ -53,10 +62,9 @@ public class TaskServiceImpl implements TaskService {
                     .build();
 
             taskRepository.save(task); // -> Makes generate ID to task
+            taskObservable.notifyTaskChange(task);
             return task;
-
         }
-
         throw new UserNotFoundException("User not found, your task has not been saved.");
     }
 
@@ -68,5 +76,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void update(TaskModel task) {
         taskRepository.save(task);
+        taskObservable.notifyTaskChange(task);
     }
 }

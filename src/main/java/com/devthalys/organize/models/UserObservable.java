@@ -19,9 +19,10 @@ public class UserObservable {
         observers.remove(userObserver);
     }
 
-    public void notifyUserChange(UserModel user){
+    public UserModel notifyUserChange(UserModel user){
         for(UserObserver userObserver : observers){
             userObserver.onUserChange(user);
         }
+        return user;
     }
 }

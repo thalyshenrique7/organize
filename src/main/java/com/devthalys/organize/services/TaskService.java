@@ -3,6 +3,7 @@ package com.devthalys.organize.services;
 import com.devthalys.organize.dtos.TaskDto;
 import com.devthalys.organize.enums.TaskStatus;
 import com.devthalys.organize.models.TaskModel;
+import com.devthalys.organize.models.UserModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface TaskService {
     List<TaskModel> findAll();
 
     Optional<TaskModel> findById(String id);
+
+    List<TaskModel> findByUser(UserModel user);
 
     List<TaskModel> findTasksOrderedByStatus(TaskStatus tasks);
 
